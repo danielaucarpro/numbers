@@ -70,14 +70,14 @@ const stringLib = () => {
 
     //
     for (let i = start; i <= (start + count); i++) {
+      //since the skipCount is not equal to skipEvery increment skipCount by 1 until is equal to skipevery
+      skipCount++;
       // If the var is equal to the "skipEvery" push the number to the empty array. then set skiCount value to zero
       if (skipCount == skipEvery) {
         numberListB.push(i);
         skipCount = 0;
         console.log("Here is your number listB: " + numberListB);
       }
-      //since the skipCount is not equal to skipEvery increment skipCount by 1 until is equal to skipevery
-      skipCount++;
       //for loop will continue increment skipCount forever, so if skipCount is bigger than skipEvery, set the value to zero again.
       if (skipCount > skipEvery) {
         skipCount = 0;
@@ -145,15 +145,59 @@ const stringLib = () => {
         randomB.push(Math.floor(Math.random() * count));
       }
       else if (allowDuplicates === false) {
-        randomB.push(Math.floor(Math.random() * count));
-        for(let i = 0; i<=randomB.length; i++){
-          if(i === i){
-            randomB.pop(i);
-          }
-        }
+        //new array with ranbomB list fulfilled with random numbers
+        let newArr = [randomB.push(Math.floor(Math.random() * count))];
+        //check if the new array has dupplicates
+        noDuplicates(newArr);
+        //push the new array into the old array
+        randomB.push(newArr);
       }
     }
+    //return and show me the result
     return document.getElementById("rListB").innerHTML = randomB;
   }
   RandomNumberListB(10, 20, 30, false);
+
+  // For a number to be prime, it must meet the following conditions
+  // Can it be divided by 1? - all numbers can be divided by one, so yes
+  // can it be divided by itself? - all numbers, divided into themselves once
+  // Can it be EVENLY divided by any other number? if it can, it can't be prime
+  function isPrime(aNumber) {
+    if (aNumber === 1) {
+      return document.getElementById("prime").innerHTML = false + ` ${aNumber} is not a prime number`;
+    }
+    else if (aNumber === 2) {
+      return document.getElementById("prime").innerHTML = true + ` ${aNumber} is a prime number`;
+    }
+    else {
+      for (let i = 2; i < aNumber; i++) {
+        //this loop will try to divide aNumber with every number lower than itself
+        //(it cannot be "<=" because all number cam be divided by itself)
+        //if aNumber id divided by any number lower than itself, and the result there is no reamins
+        //than this is a prime number
+        if (aNumber % i === 0) {
+          return document.getElementById("prime").innerHTML = false + ` ${aNumber} is not a prime number`;
+        }
+      }
+      return document.getElementById("prime").innerHTML = true + ` ${aNumber} is a prime number`;
+    }
+  }
+  isPrime(37);
+}
+
+//this funstion will store the numbers inside this new array, compare the numbers with the array given
+//and push only the numbers only once. 
+function noDuplicates(array) {
+  //new array to store the numbers
+  let uniqueArray = [];
+  for (let value of array) {
+    //index of method return the positions of the first occurencce of a specified value
+    //so if the value occured once will push into the new array
+    //if the value happens to occur more than once it will push to the new array only the first time it appears
+    if (uniqueArray.indexOf(value) === -1) {
+      uniqueArray.push(value);
+      console.log("Your unique array is: " + uniqueArray);
+    }
+  }
+  return uniqueArray;
 }
